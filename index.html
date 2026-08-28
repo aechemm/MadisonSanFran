@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="I have a very important question for you.">
+  <title>San Francisco?</title>
+  <style>
+    :root { --ink:#38211f; --red:#e34856; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); font-family:Georgia,"Times New Roman",serif; }
+    button { font-family:ui-sans-serif,system-ui,sans-serif; }
+    .shell {
+      min-height:100svh; display:grid; place-items:center; overflow:hidden; position:relative; padding:24px;
+      background:radial-gradient(circle at 50% -20%,#fff 0,transparent 45%),linear-gradient(145deg,#fff8ee,#ffd9d1);
+    }
+    .glow { position:absolute; width:300px; height:300px; border-radius:50%; filter:blur(60px); opacity:.35; pointer-events:none; }
+    .glow.one { background:#ff766f; top:-130px; left:-100px; }
+    .glow.two { background:#ffc45e; right:-120px; bottom:-130px; }
+    .postcard {
+      width:min(720px,100%); min-height:530px; position:relative; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; padding:58px 54px 38px; text-align:center;
+      background:rgba(255,253,247,.94); border:1px solid rgba(171,85,72,.24); border-radius:28px;
+      box-shadow:0 30px 80px rgba(101,45,43,.18),inset 0 0 0 9px rgba(255,255,255,.55);
+      transform:rotate(-.45deg);
+    }
+    .postcard::after { content:""; position:absolute; inset:16px; border:1px dashed rgba(163,83,70,.22); border-radius:18px; pointer-events:none; }
+    .stamp {
+      position:absolute; top:30px; right:34px; width:58px; height:68px; display:grid; place-items:center;
+      color:#c93f4c; font:700 26px/1 ui-sans-serif,system-ui,sans-serif; border:2px solid #d88f85;
+      border-radius:5px; transform:rotate(7deg);
+    }
+    .eyebrow,.footer { font-family:ui-sans-serif,system-ui,sans-serif; font-weight:700; letter-spacing:.19em; text-transform:uppercase; }
+    .eyebrow { margin:0 0 12px; color:#c84b56; font-size:12px; }
+    .bridge { font-size:54px; line-height:1; margin-bottom:13px; filter:drop-shadow(0 7px 12px rgba(151,54,54,.15)); }
+    h1 { max-width:610px; margin:0; font-size:clamp(38px,7vw,64px); line-height:.99; letter-spacing:-.045em; font-weight:600; }
+    .subhead { margin:20px 0 0; color:#80605b; font:16px/1.5 ui-sans-serif,system-ui,sans-serif; }
+    .stage { width:min(410px,100%); height:132px; position:relative; margin-top:26px; }
+    .choice {
+      position:absolute; top:38px; height:54px; min-width:112px; border-radius:999px; font-size:17px;
+      font-weight:800; cursor:pointer; transition:transform .18s,box-shadow .18s,left .16s,top .16s;
+    }
+    #yes { left:calc(50% - 126px); z-index:2; color:#fff; background:var(--red); border:0; box-shadow:0 10px 24px rgba(227,72,86,.28); }
+    #yes:hover { transform:translateY(-3px) scale(1.04); background:#d93d4b; box-shadow:0 14px 28px rgba(227,72,86,.33); }
+    #no { left:calc(50% + 14px); color:#765b58; background:#fffdf9; border:1px solid #dcb7aa; }
+    .footer { margin:auto 0 0; color:#a78079; font-size:10px; }
+    .answer { animation:pop .5s cubic-bezier(.2,.9,.2,1.2) both; }
+    .heart { color:var(--red); font:70px/1 ui-sans-serif,system-ui,sans-serif; animation:heartbeat 1.25s ease-in-out infinite; }
+    .answer h1 { margin-top:16px; }
+    .answer p { color:#735450; font:18px/1.6 ui-sans-serif,system-ui,sans-serif; }
+    @keyframes pop { from { opacity:0; transform:scale(.82) rotate(-2deg); } to { opacity:1; transform:scale(1); } }
+    @keyframes heartbeat { 0%,100% { transform:scale(1); } 45% { transform:scale(1.14); } }
+    @media (max-width:560px) {
+      .shell { padding:13px; } .postcard { min-height:560px; padding:76px 24px 32px; border-radius:22px; transform:none; }
+      .stamp { top:27px; right:28px; width:46px; height:55px; font-size:21px; } .bridge { font-size:46px; }
+      h1 { font-size:clamp(39px,12vw,52px); } .subhead { font-size:15px; } .stage { width:100%; height:150px; }
+      #yes { left:calc(50% - 123px); } #no { left:calc(50% + 11px); }
+    }
+    @media (prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms!important; animation-iteration-count:1!important; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="glow one"></div><div class="glow two"></div>
+    <section class="postcard" aria-live="polite">
+      <div class="stamp" aria-hidden="true">✈</div>
+      <p class="eyebrow">A very important question</p>
+      <div id="question">
+        <div class="bridge" aria-hidden="true">🌉</div>
+        <h1>Do you want to come to<br>San Francisco with me?</h1>
+        <p class="subhead">Choose carefully. One answer is a little shy.</p>
+        <div class="stage" id="stage">
+          <button class="choice" id="yes">Yes! ♥</button>
+          <button class="choice" id="no" aria-label="No — but this button runs away">No</button>
+        </div>
+      </div>
+      <div class="answer" id="answer" hidden>
+        <div class="heart" aria-hidden="true">♥</div>
+        <h1>Yay! San Francisco it is!</h1>
+        <p>I knew you’d make the right choice. Pack a jacket. 🌉</p>
+      </div>
+      <p class="footer">San Francisco • California</p>
+    </section>
+  </main>
+  <script>
+    const stage = document.querySelector("#stage");
+    const no = document.querySelector("#no");
+    const yes = document.querySelector("#yes");
+    function runAway(event) {
+      if (event) event.preventDefault();
+      const padding = 10;
+      const maxX = Math.max(0, stage.clientWidth - no.offsetWidth - padding * 2);
+      const maxY = Math.max(0, stage.clientHeight - no.offsetHeight - padding * 2);
+      no.style.left = padding + Math.random() * maxX + "px";
+      no.style.top = padding + Math.random() * maxY + "px";
+    }
+    no.addEventListener("pointerenter", runAway);
+    no.addEventListener("pointerdown", runAway);
+    no.addEventListener("focus", runAway);
+    yes.addEventListener("click", () => {
+      document.querySelector("#question").hidden = true;
+      document.querySelector("#answer").hidden = false;
+    });
+  </script>
+</body>
+</html>
